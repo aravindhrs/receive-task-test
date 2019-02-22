@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_0lbapjo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.5.0">
+  <bpmn:process id="receive-task-test" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Order Placed">
+      <bpmn:outgoing>SequenceFlow_1n3zbr8</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="ServiceTask_1z09ujc" name="Process Payment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="process-payment" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1n3zbr8</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1rggc1g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1n3zbr8" sourceRef="StartEvent_1" targetRef="ServiceTask_1z09ujc" />
+    <bpmn:receiveTask id="ReceiveTask_1c4ezeg" name="Payment Received" messageRef="Message_165syti">
+      <bpmn:incoming>SequenceFlow_1rggc1g</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ct1oc1</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1rggc1g" sourceRef="ServiceTask_1z09ujc" targetRef="ReceiveTask_1c4ezeg" />
+    <bpmn:endEvent id="EndEvent_0ogc1ov" name="Order Fulfilled">
+      <bpmn:incoming>SequenceFlow_0ct1oc1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0ct1oc1" sourceRef="ReceiveTask_1c4ezeg" targetRef="EndEvent_0ogc1ov" />
+  </bpmn:process>
+  <bpmn:message id="Message_165syti" name="payment-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="$.orderId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="receive-task-test">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="258" y="199" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="244" y="242" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1z09ujc_di" bpmnElement="ServiceTask_1z09ujc">
+        <dc:Bounds x="344" y="177" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1n3zbr8_di" bpmnElement="SequenceFlow_1n3zbr8">
+        <di:waypoint x="294" y="217" />
+        <di:waypoint x="344" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ReceiveTask_1c4ezeg_di" bpmnElement="ReceiveTask_1c4ezeg">
+        <dc:Bounds x="494" y="177" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1rggc1g_di" bpmnElement="SequenceFlow_1rggc1g">
+        <di:waypoint x="444" y="217" />
+        <di:waypoint x="494" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0ogc1ov_di" bpmnElement="EndEvent_0ogc1ov">
+        <dc:Bounds x="644" y="199" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="627" y="242" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ct1oc1_di" bpmnElement="SequenceFlow_0ct1oc1">
+        <di:waypoint x="594" y="217" />
+        <di:waypoint x="644" y="217" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
